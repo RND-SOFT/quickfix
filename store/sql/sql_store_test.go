@@ -26,8 +26,8 @@ import (
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/quickfixgo/quickfix"
-	"github.com/quickfixgo/quickfix/internal/testsuite"
+	"github.com/RND-SOFT/quickfix"
+	"github.com/RND-SOFT/quickfix/internal/testsuite"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

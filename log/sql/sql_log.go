@@ -22,8 +22,8 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/quickfixgo/quickfix"
-	"github.com/quickfixgo/quickfix/config"
+	"github.com/RND-SOFT/quickfix"
+	"github.com/RND-SOFT/quickfix/config"
 )
 
 type sqlLogFactory struct {
@@ -166,7 +166,7 @@ func (l sqlLog) insert(table string, value string) {
 			time,
 			beginstring, session_qualifier,
 			sendercompid, sendersubid, senderlocid,
-			targetcompid, targetsubid, targetlocid, 
+			targetcompid, targetsubid, targetlocid,
 			text)
 			VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, l.placeholder),
 		time.Now(),

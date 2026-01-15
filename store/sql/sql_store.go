@@ -23,8 +23,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/quickfixgo/quickfix"
-	"github.com/quickfixgo/quickfix/config"
+	"github.com/RND-SOFT/quickfix"
+	"github.com/RND-SOFT/quickfix/config"
 )
 
 const (

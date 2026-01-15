@@ -22,8 +22,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/quickfixgo/quickfix/datadictionary"
-	"github.com/quickfixgo/quickfix/internal"
+	"github.com/RND-SOFT/quickfix/datadictionary"
+	"github.com/RND-SOFT/quickfix/internal"
 )
 
 // The Session is the primary FIX abstraction for message communication.
