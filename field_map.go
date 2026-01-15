@@ -17,6 +17,7 @@ package quickfix
 
 import (
 	"bytes"
+	"math"
 	"sort"
 	"sync"
 	"time"
@@ -58,8 +59,38 @@ type FieldMap struct {
 	rwLock *sync.RWMutex
 }
 
+type TagsOrderKind uint
+
+const (
+	TagsOrderKind_asc    TagsOrderKind = iota // ascending tags order
+	TagsOrderKind_custom                      // tags order depends on order in which they were set
+)
+
 // ascending tags.
 func normalFieldOrder(i, j Tag) bool { return i < j }
+
+// custom tag order.
+func (m *FieldMap) customFieldOrder() tagOrder {
+  tagMap := make(map[Tag]int)
+  for i, t := range m.tags {
+    tagMap[t] = i
+  }
+
+  return func(i, j Tag) bool {
+    orderi := math.MaxInt32
+    orderj := math.MaxInt32
+
+    if iIndex, ok := tagMap[i]; ok {
+      orderi = iIndex
+    }
+
+    if jIndex, ok := tagMap[j]; ok {
+      orderj = jIndex
+    }
+
+    return orderi < orderj
+  }
+}
 
 func (m *FieldMap) init() {
 	m.initWithOrdering(normalFieldOrder)
@@ -69,6 +100,16 @@ func (m *FieldMap) initWithOrdering(ordering tagOrder) {
 	m.rwLock = &sync.RWMutex{}
 	m.tagLookup = make(map[Tag]field)
 	m.compare = ordering
+}
+
+// Change tags ordering. Default is "TagsOrderKind_asc" - tags ordered ascending
+func (m *FieldMap) SetTagsOrder(ordering TagsOrderKind) {
+	switch ordering {
+	case TagsOrderKind_asc:
+		m.compare = normalFieldOrder
+	case TagsOrderKind_custom:
+		m.compare = m.customFieldOrder()
+	}
 }
 
 // Tags returns all of the Field Tags in this FieldMap.
